@@ -99,7 +99,6 @@ function flights($decodedResult, $position) { //Position is either 'arrival' or 
         if ($mysql->query("SELECT flightnum FROM flights WHERE flightnum = '$callsign';")->num_rows > 0) {
             $mysql->query("UPDATE flights SET depicao = '$depIcao', arricao = '$arrIcao', route = '$route', tailnum = '$tailnumber', flightlevel = '$altitude', distance = '$distance', deptime = '$deptime', arrtime = '$arrtime', flighttime = '$flighttime', daysofweek = CONCAT(daysofweek, '$currDay') WHERE flightnum = '$callsign';");
         } else {
-            print('Inserting...');
             $mysql->query("INSERT INTO flights VALUES('$airline', '$callsign', '$depIcao', '$arrIcao', '$route', '$tailnumber', '$altitude', '$distance', '$deptime', '$arrtime', '$flighttime', 'Pulled using Ramis free FlightAwarePuller', '160', 'P', '$currDay', '1');");
         }
     }
