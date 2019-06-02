@@ -74,7 +74,7 @@ function flights($decodedResult, $position) { //Position is either 'arrival' or 
     foreach($positionState as $flight) {
         //We need to make a connection to the database, we use SQL
         $mysql = new mysqli(env('DB_HOST'), env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_NAME'));
-        print($mysql->get_connection_stats());
+        print_r($mysql->get_connection_stats());
 
         //We should set some variables to make it easier
         $airline = $flight['airline'];
