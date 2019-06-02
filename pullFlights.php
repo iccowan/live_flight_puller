@@ -63,7 +63,6 @@ $returnedResult = $newSession->authenticate($apiUserId, $apiKey, $ICAO);
 
 //Now we can decode this json and place it into a nice array
 $decodedResult = json_decode($returnedResult, true); //Set it to true so we get a multidimensional array
-print($decodedResult);
 
 //Create a function that takes in the decoded json and sends it to the database
 function flights($decodedResult, $position) { //Position is either 'arrival' or 'departures'
@@ -73,7 +72,6 @@ function flights($decodedResult, $position) { //Position is either 'arrival' or 
 
     //Foreach position State, we want to get the info and send them to the database
     foreach($positionState as $flight) {
-
         //We need to make a connection to the database, we use SQL
         $mysql = new mysqli(env('DB_HOST'), env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_NAME'));
 
@@ -101,7 +99,8 @@ function flights($decodedResult, $position) { //Position is either 'arrival' or 
         if($mysql->query("SELECT flightnum FROM flights WHERE flightnum = '$callsign';")->num_rows > 0) {
             $mysql->query("UPDATE flights SET depicao = '$depIcao', arricao = '$arrIcao', route = '$route', tailnum = '$tailnumber', flightlevel = '$altitude', distance = '$distance', deptime = '$deptime', arrtime = '$arrtime', flighttime = '$flighttime', daysofweek = CONCAT(daysofweek, '$currDay') WHERE flightnum = '$callsign';");
         }
-        else {
+        else
+            print('Inserting...');
             $mysql->query("INSERT INTO flights VALUES('$airline', '$callsign', '$depIcao', '$arrIcao', '$route', '$tailnumber', '$altitude', '$distance', '$deptime', '$arrtime', '$flighttime', 'Pulled using Ramis free FlightAwarePuller', '160', 'P', '$currDay', '1');");
         }
 
