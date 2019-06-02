@@ -87,8 +87,8 @@ function flights($decodedResult, $position) { //Position is either 'arrival' or 
         $flighttime = gmdate('H:i', $flight['filed_ete']); //We convert it from Unix time stamp to human readable
         $route = $flight['route']; //Doesn't always exist, if it doesn't, we'll set it to nothing to avoid issues when sending to database
         $altitude = $flight['filed_altitude']; //Same as above
-        if(empty($route)) $route = "";
-        if(empty($altitude)) $altitude = "";
+        if (empty($route)) $route = "";
+        if (empty($altitude)) $altitude = "";
         $currDay = date("N"); //This is to get the current day of the week in numbers
 
         //Now we can start pushing to the database!
@@ -96,16 +96,13 @@ function flights($decodedResult, $position) { //Position is either 'arrival' or 
         //If it does, we'll just update the data in the database rather than create two entries
         //We also need to increment the days of the week the flight is flown if it exits
 
-        if($mysql->query("SELECT flightnum FROM flights WHERE flightnum = '$callsign';")->num_rows > 0) {
+        if ($mysql->query("SELECT flightnum FROM flights WHERE flightnum = '$callsign';")->num_rows > 0) {
             $mysql->query("UPDATE flights SET depicao = '$depIcao', arricao = '$arrIcao', route = '$route', tailnum = '$tailnumber', flightlevel = '$altitude', distance = '$distance', deptime = '$deptime', arrtime = '$arrtime', flighttime = '$flighttime', daysofweek = CONCAT(daysofweek, '$currDay') WHERE flightnum = '$callsign';");
-        }
-        else
+        } else {
             print('Inserting...');
             $mysql->query("INSERT INTO flights VALUES('$airline', '$callsign', '$depIcao', '$arrIcao', '$route', '$tailnumber', '$altitude', '$distance', '$deptime', '$arrtime', '$flighttime', 'Pulled using Ramis free FlightAwarePuller', '160', 'P', '$currDay', '1');");
         }
-
     }
-
 }
 
 flights($decodedResult, "arrivals");
