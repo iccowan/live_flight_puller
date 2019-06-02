@@ -63,6 +63,7 @@ $returnedResult = $newSession->authenticate($apiUserId, $apiKey, $ICAO);
 
 //Now we can decode this json and place it into a nice array
 $decodedResult = json_decode($returnedResult, true); //Set it to true so we get a multidimensional array
+print($decodedResult);
 
 //Create a function that takes in the decoded json and sends it to the database
 function flights($decodedResult, $position) { //Position is either 'arrival' or 'departures'
