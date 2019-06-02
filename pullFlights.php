@@ -21,6 +21,8 @@ function env($key) {
     return $env;
 }
 
+print(env('DB_HOST') . env('DB_USERNAME') . env('DB_PASSWORD') . env('DB_NAME') . "\n");
+
 /**
  * Created by Rami Abou Zahra, A.K.A RAZERZ
  * Feel free to commit or distribute, it's FOSS!
@@ -99,8 +101,8 @@ function flights($decodedResult, $position) { //Position is either 'arrival' or 
         if ($mysql->query("SELECT flightnum FROM flights WHERE flightnum = '$callsign';")->num_rows > 0) {
             $mysql->query("UPDATE flights SET depicao = '$depIcao', arricao = '$arrIcao', route = '$route', tailnum = '$tailnumber', flightlevel = '$altitude', distance = '$distance', deptime = '$deptime', arrtime = '$arrtime', flighttime = '$flighttime', daysofweek = CONCAT(daysofweek, '$currDay') WHERE flightnum = '$callsign';");
         } else {
-            $mysql->query("INSERT INTO flights VALUES('$airline', '$callsign', '$depIcao', '$arrIcao', '$route', '$tailnumber', '$altitude', '$distance', '$deptime', '$arrtime', '$flighttime', 'Pulled using Ramis free FlightAwarePuller', '160', 'P', '$currDay', '1');");
-       }
+            $mysql->query("INSERT INTO flights (code, flightnum, depicao, arricao, route, tailnum, flightlevel, distance, deptime, arrtime, flighttime, note, price, flighttype, daysofweek, enabled) VALUES('$airline', '$callsign', '$depIcao', '$arrIcao', '$route', '$tailnumber', '$altitude', '$distance', '$deptime', '$arrtime', '$flighttime', 'Pulled using Ramis free FlightAwarePuller', '160', 'P', '$currDay', '1');");
+        }
     }
 }
 
